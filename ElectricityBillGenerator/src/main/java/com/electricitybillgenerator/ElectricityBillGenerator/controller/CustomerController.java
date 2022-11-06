@@ -18,19 +18,18 @@ import com.electricitybillgenerator.ElectricityBillGenerator.service.CustomerSer
 @CrossOrigin(origins = "*")
 @RequestMapping("/customer")
 public class CustomerController {
-	
+
 	@Autowired
 	CustomerService service;
+
 	@GetMapping("/getAll")
-	public ResponseEntity<List<Customer>> getAll(){
+	public ResponseEntity<List<Customer>> getAll() {
 		return service.getAll();
 	}
-	
-	
+
 	@PostMapping("/addCustomer")
 	public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
 		return service.addCustomer(customer);
 	}
-	
-	
+
 }

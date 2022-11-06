@@ -16,13 +16,13 @@ import com.electricitybillgenerator.ElectricityBillGenerator.entity.Customer;
 public class CustomerService {
 
 	@Autowired
-	CustomerRepository crud;
+	CustomerRepository customerRepository;
 	
 	public ResponseEntity<List<Customer>> getAll(){
 			
 			try {
 				List<Customer> customers = new ArrayList<>();
-				crud.findAll().forEach(customers::add);
+				customerRepository.findAll().forEach(customers::add);
 	
 				if (customers.isEmpty()) {
 					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -36,13 +36,14 @@ public class CustomerService {
 		}
 		
 
-	public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+	public ResponseEntity<Customer> addCustomer(Customer customer) {
 		try {
-				Customer savedcustomer = crud.save(customer);
+				Customer savedcustomer = customerRepository.save(customer);
 				return new ResponseEntity<>(savedcustomer,HttpStatus.CREATED);
 				
 		}
 		catch(Exception e) {
+			System.out.println(e);
 			return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

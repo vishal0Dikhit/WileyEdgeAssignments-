@@ -5,19 +5,20 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.electricitybillgenerator.ElectricityBillGenerator.entity.CustomerBill;
 
-public interface CustomerBillRepository extends JpaRepository<CustomerBill,Integer>{
-	
-	//@Query("select b from customer_bill b where b.customer_id = :id")
-	public List<CustomerBill> findByCustomerId(@Param("id") Integer id);
+public interface CustomerBillRepository extends JpaRepository<CustomerBill, Integer> {
 
+	@Query("SELECT bill FROM CustomerBill bill WHERE bill.customer.id=?1")
+	public List<CustomerBill> findByCustomerId(Integer id);
+
+	@Query("SELECT bill FROM CustomerBill bill WHERE bill.month=?1 ORDER BY bill.totalBill desc")
 	public List<CustomerBill> findByMonth(Month month);
 
-	public List<CustomerBill> findTotalBillOfAllCustomerByMonth(Month month);
+	@Query("SELECT SUM(bill.totalBill) From CustomerBill bill WHERE bill.month=?1")
+	public Double findTotalBillOfAllCustomerByMonth(Month month);
 
-	@Query("select b from customer_bill")
+	@Query("SELECT bill FROM CustomerBill bill WHERE bill.customer.id=?1 AND bill.month=?2")
 	public List<CustomerBill> findCustomerByMonth(Integer id, Month month);
 }
